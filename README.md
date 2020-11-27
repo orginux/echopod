@@ -28,12 +28,8 @@ Optional scaling
 kubectl scale deployment $DEPLOY_NAME --replicas=5
 ```
 
-Forward port
-```bash
-kubectl port-forward deployment/${DEPLOY_NAME} 8080:80
-```
 
-or reate Service
+Ceate Service
 ```bash
 kubectl expose deployment $DEPLOY_NAME --name ${DEPLOY_NAME}-service --target-port 80 --port 80
 ```
@@ -51,6 +47,11 @@ spec:
               servicePort: 80
 ```
 
+
+Or forward port
+```bash
+kubectl port-forward deployment/${DEPLOY_NAME} 8080:80
+```
 
 
 Get content
