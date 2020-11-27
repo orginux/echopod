@@ -1,6 +1,7 @@
 FROM golang:1-alpine AS builder
 
 MAINTAINER orginux
+EXPOSE 80
 WORKDIR $GOPATH/src/container-hostname/
 
 COPY main.go .
