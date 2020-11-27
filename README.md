@@ -28,12 +28,17 @@ Optional scaling
 kubectl scale deployment $DEPLOY_NAME --replicas=5
 ```
 
-Create Service
+Forward port
+```bash
+kubectl port-forward deployment/${DEPLOY_NAME} 8080:80
+```
+
+or reate Service
 ```bash
 kubectl expose deployment $DEPLOY_NAME --name ${DEPLOY_NAME}-service --target-port 80 --port 80
 ```
 
-Add rule Ingress
+and add rule Ingress
 ```yaml
 spec:
   rules:
@@ -45,6 +50,8 @@ spec:
               serviceName: example-service
               servicePort: 80
 ```
+
+
 
 Get content
 ```
