@@ -1,5 +1,5 @@
 # container-hostname
-The minimal image which web-server for debugging network in Docker or Kubernetes. 
+The minimal image with web-server for debugging network in Docker or Kubernetes
 
 ## Usage
 
