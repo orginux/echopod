@@ -31,22 +31,8 @@ kubectl scale deployment $DEPLOY_NAME --replicas=5
 
 Ceate Service
 ```bash
-kubectl expose deployment $DEPLOY_NAME --name ${DEPLOY_NAME}-service --target-port 80 --port 80
+kubectl expose deployment $DEPLOY_NAME --port=80 --target-port=80 --name=demo-service --type=LoadBalancer
 ```
-
-and add rule Ingress
-```yaml
-spec:
-  rules:
-    - host: my.host.name
-      http:
-        paths:
-          - path: /debug
-            backend:
-              serviceName: example-service
-              servicePort: 80
-```
-
 
 Or forward port
 ```bash
