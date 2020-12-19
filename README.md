@@ -1,5 +1,5 @@
 # pod-info
-The minimal image with web-server for debugging network in Docker or Kubernetes
+The minimal image with web-server for debugging Services in Kubernetes
 
 ## Usage
 
@@ -42,9 +42,9 @@ kubectl port-forward deployment/${DEPLOY_NAME} 8080:80
 
 Get content
 ```
-$ curl http://my.host.name/debug
+$ curl http://external-ip/debug
 Hostname: deploy-name-5757fb5f64-k4jzv
-IP: 10.233.64.51
+IP: 10.0.8.7
 Namespace: default
 URI: /debug
 ```
