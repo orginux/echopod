@@ -1,11 +1,11 @@
-# container-hostname
+# pod-info
 The minimal image with web-server for debugging network in Docker or Kubernetes
 
 ## Usage
 
 ### Docker
 ```bash
-docker run --rm -d -p 80:80 orginux/container-hostname
+docker run --rm -d -p 80:80 orginux/pod-info
 ```
 
 ```bash
@@ -20,7 +20,7 @@ URI: /
 Create Deployment
 ```bash
 export DEPLOY_NAME="example"
-kubectl create deployment $DEPLOY_NAME --image=orginux/container-hostname
+kubectl create deployment $DEPLOY_NAME --image=orginux/pod-info
 ```
 
 Optional scaling
