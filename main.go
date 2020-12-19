@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"net"
@@ -23,8 +24,12 @@ func main() {
 	if err != nil {
 		log.Fatal("Error getting IP address:", err)
 	}
+	namespace, err := getNamespace()
+	if err != nil {
+		log.Fatal("Error getting Pod namespace:", err)
+	}
 
-	webServer(hostname, IPaddr)
+	webServer(hostname, IPaddr, namespace)
 }
 
 func getIP() (string, error) {
@@ -43,10 +48,29 @@ func getIP() (string, error) {
 	return "", nil
 }
 
-func webServer(hostname, IPaddr string) {
+func getNamespace() (string, error) {
+	var namespace string
+	namespaceFile := "/var/run/secrets/kubernetes.io/serviceaccount/namespace"
+	if _, err := os.Stat(namespaceFile); err == nil {
+		file, err := os.Open(namespaceFile)
+		if err != nil {
+			return "", err
+		}
+		defer file.Close()
+
+		scaner := bufio.NewScanner(file)
+		for scaner.Scan() {
+			namespace += scaner.Text()
+		}
+		return namespace, nil
+	}
+	return "", nil
+}
+
+func webServer(hostname, IPaddr, namespace string) {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("%s - %s %s %s", hostname, r.RemoteAddr, r.Method, r.URL)
-		fmt.Fprintf(w, "Hostname: %s\nIP: %s\nURI: %s\n", hostname, IPaddr, r.RequestURI)
+		fmt.Fprintf(w, "Name: %s\nIP: %s\nNamespace: %s\nURI: %s\n", hostname, IPaddr, namespace, r.RequestURI)
 	})
 	log.Fatal(http.ListenAndServe(":80", nil))
 }
