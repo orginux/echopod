@@ -59,5 +59,6 @@ Get content
 $ curl http://my.host.name/debug
 Hostname: deploy-name-5757fb5f64-k4jzv
 IP: 10.233.64.51
+Namespace: default
 URI: /debug
 ```
