@@ -31,7 +31,7 @@ kubectl scale deployment $DEPLOY_NAME --replicas=5
 
 Ceate Service
 ```bash
-kubectl expose deployment $DEPLOY_NAME --port=80 --target-port=80 --name=demo-service --type=LoadBalancer
+kubectl expose deployment $DEPLOY_NAME --port=80 --target-port=80 --name=${DEPLOY_NAME}-service --type=LoadBalancer
 ```
 
 Or forward port
