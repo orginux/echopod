@@ -72,5 +72,5 @@ func webServer(hostname, IPaddr, namespace string) {
 		log.Printf("%s - %s %s %s", hostname, r.RemoteAddr, r.Method, r.URL)
 		fmt.Fprintf(w, "Name: %s\nIP: %s\nNamespace: %s\nURI: %s\n", hostname, IPaddr, namespace, r.RequestURI)
 	})
-	log.Fatal(http.ListenAndServe(":80", nil))
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

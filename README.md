@@ -5,7 +5,7 @@ The minimal image with web-server for debugging Services in Kubernetes
 
 ### Docker
 ```bash
-docker run --rm -d -p 80:80 orginux/pod-info
+docker run --rm -d -p 80:8080 orginux/pod-info
 ```
 
 ```bash
@@ -31,12 +31,12 @@ kubectl scale deployment $DEPLOY_NAME --replicas=5
 
 Ceate Service
 ```bash
-kubectl expose deployment $DEPLOY_NAME --port=80 --target-port=80 --name=${DEPLOY_NAME}-service --type=LoadBalancer
+kubectl expose deployment $DEPLOY_NAME --port=80 --target-port=8080 --name=${DEPLOY_NAME}-service --type=LoadBalancer
 ```
 
 Or forward port
 ```bash
-kubectl port-forward deployment/${DEPLOY_NAME} 8080:80
+kubectl port-forward deployment/${DEPLOY_NAME} 8080:8080
 ```
 
 
