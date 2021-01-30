@@ -1,5 +1,5 @@
-# pod-info
-The minimal image with web-server for debugging Services in Kubernetes
+# echopod
+The minimal HTTP server that provides info about container/pod.
 
 ## Usage
 
