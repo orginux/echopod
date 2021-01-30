@@ -3,33 +3,43 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"html/template"
 	"log"
 	"net"
 	"net/http"
 	"os"
 )
 
+const templ = `Hostname: {{ .Hostname}}`
+
 var (
 	hostname string
-	IPaddr   string
+	ipAddr   string
 )
 
 func main() {
+	type PodInfo struct {
+		Hostname string
+	}
+
 	hostname, err := os.Hostname()
 	if err != nil {
 		log.Fatal("Error getting hostname:", err)
 	}
+	info := PodInfo{hostname}
 
-	IPaddr, err := getIP()
-	if err != nil {
-		log.Fatal("Error getting IP address:", err)
-	}
-	namespace, err := getNamespace()
-	if err != nil {
-		log.Fatal("Error getting Pod namespace:", err)
+	report := template.Must(template.New("podinfo").Parse(templ))
+
+	if err := report.Execute(os.Stdout, info); err != nil {
+		log.Fatal(err)
 	}
 
-	webServer(hostname, IPaddr, namespace)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("%s - %s %s %s", hostname, r.RemoteAddr, r.Method, r.URL)
+		report.Execute(w, info)
+	})
+	log.Fatal(http.ListenAndServe(":8080", nil))
+
 }
 
 func getIP() (string, error) {
@@ -65,12 +75,4 @@ func getNamespace() (string, error) {
 		return namespace, nil
 	}
 	return "", nil
-}
-
-func webServer(hostname, IPaddr, namespace string) {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("%s - %s %s %s", hostname, r.RemoteAddr, r.Method, r.URL)
-		fmt.Fprintf(w, "Name: %s\nIP: %s\nNamespace: %s\nURI: %s\n", hostname, IPaddr, namespace, r.RequestURI)
-	})
-	log.Fatal(http.ListenAndServe(":8080", nil))
 }
