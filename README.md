@@ -5,7 +5,7 @@ The minimal HTTP server that provides info about container/pod.
 
 ### Docker
 ```bash
-docker run --rm -d -p 80:8080 orginux/pod-info
+docker run --rm -d -p 80:8080 orginux/echopod
 ```
 
 ```bash
@@ -20,7 +20,7 @@ URI: /
 Create Deployment
 ```bash
 export DEPLOY_NAME="example"
-kubectl create deployment $DEPLOY_NAME --image=orginux/pod-info
+kubectl create deployment $DEPLOY_NAME --image=orginux/echopod
 ```
 
 Optional scaling
