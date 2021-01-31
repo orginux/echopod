@@ -45,6 +45,6 @@ Get content
 $ curl http://external-ip/debug
 Hostname: deploy-name-5757fb5f64-k4jzv
 IP: 10.0.8.7
-Namespace: default
 URI: /debug
+Namespace: default
 ```
