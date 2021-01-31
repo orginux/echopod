@@ -10,32 +10,47 @@ import (
 	"os"
 )
 
-const templ = `Hostname: {{ .Hostname}}`
+const templ = `
+Hostname: {{ .Hostname}}
+IP: {{ .IP}}
+URI: {{ .URI}}
+{{if .Namespace}}
+Namespace: {{ .Namespace}}
+{{end}}
 
-var (
-	hostname string
-	ipAddr   string
-)
+`
 
 func main() {
 	type PodInfo struct {
-		Hostname string
+		Hostname  string
+		IP        string
+		Namespace string
+		URI       string
 	}
 
-	hostname, err := os.Hostname()
+	var info PodInfo
+	var err error
+
+	info.Hostname, err = os.Hostname()
 	if err != nil {
 		log.Fatal("Error getting hostname:", err)
 	}
-	info := PodInfo{hostname}
 
-	report := template.Must(template.New("podinfo").Parse(templ))
+	info.IP, err = getIP()
+	if err != nil {
+		log.Fatal("Error getting IP address:", err)
+	}
 
-	if err := report.Execute(os.Stdout, info); err != nil {
-		log.Fatal(err)
+	info.Namespace, err = getNamespace()
+	if err != nil {
+		log.Fatal("Error getting Pod namespace:", err)
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("%s - %s %s %s", hostname, r.RemoteAddr, r.Method, r.URL)
+		info.URI = r.RequestURI
+		report := template.Must(template.New("podinfo").Parse(templ))
+
+		log.Printf("%s - %s %s %s", r.Host, r.RemoteAddr, r.Method, r.URL)
 		report.Execute(w, info)
 	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
