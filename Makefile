@@ -1,3 +1,5 @@
+.SILENT:
+
 build:
 	docker build --tag echopod:dev .
 
