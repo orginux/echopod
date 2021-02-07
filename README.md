@@ -13,6 +13,7 @@ $ curl localhost:80
 Hostname: 837b80954f04
 IP: 172.17.0.2
 URI: /
+RemoteAddr: 10.8.8.1:2786
 ```
 
 ### Kubernetes
@@ -47,4 +48,5 @@ Hostname: deploy-name-5757fb5f64-k4jzv
 IP: 10.0.8.7
 URI: /debug
 Namespace: default
+RemoteAddr: 10.8.8.1:2786
 ```
