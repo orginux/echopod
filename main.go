@@ -14,7 +14,9 @@ const templ = `
 Hostname: {{ .Hostname}}
 IP: {{ .IP}}
 URI: {{ .URI}}
-{{- if .Namespace}}Namespace: {{ .Namespace}}{{- end}}
+{{- if .Namespace}}
+Namespace: {{ .Namespace}}
+{{- end}}
 RemoteAddr: {{ .RemoteAddr}}
 `
 
