@@ -13,10 +13,11 @@ import (
 const templ = `
 Hostname: {{ .Hostname}}
 IP: {{ .IP}}
-URI: {{ .URI}}
 {{- if .Namespace}}
 Namespace: {{ .Namespace}}
 {{- end}}
+URI: {{ .URI}}
+Method: {{ .Method}}
 RemoteAddr: {{ .RemoteAddr}}
 `
 
@@ -26,7 +27,9 @@ func main() {
 		IP         string
 		Namespace  string
 		URI        string
+		Method     string
 		RemoteAddr string
+		Response   string
 	}
 
 	var info PodInfo
@@ -50,6 +53,7 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		info.URI = r.RequestURI
 		info.RemoteAddr = r.RemoteAddr
+		info.Method = r.Method
 		report := template.Must(template.New("podinfo").Parse(templ))
 
 		log.Printf("%s - %s %s %s", r.Host, r.RemoteAddr, r.Method, r.URL)
