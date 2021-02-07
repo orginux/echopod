@@ -12,3 +12,6 @@ run: build stop
 
 stop:
 	docker stop $(container_name) || true
+
+push:
+	docker push $(docker_tag)
