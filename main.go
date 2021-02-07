@@ -14,15 +14,19 @@ const templ = `
 Hostname: {{ .Hostname}}
 IP: {{ .IP}}
 URI: {{ .URI}}
-{{if .Namespace}}Namespace: {{ .Namespace}}{{end}}
+{{- if .Namespace}}
+Namespace: {{ .Namespace}}
+{{- end}}
+RemoteAddr: {{ .RemoteAddr}}
 `
 
 func main() {
 	type PodInfo struct {
-		Hostname  string
-		IP        string
-		Namespace string
-		URI       string
+		Hostname   string
+		IP         string
+		Namespace  string
+		URI        string
+		RemoteAddr string
 	}
 
 	var info PodInfo
@@ -45,6 +49,7 @@ func main() {
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		info.URI = r.RequestURI
+		info.RemoteAddr = r.RemoteAddr
 		report := template.Must(template.New("podinfo").Parse(templ))
 
 		log.Printf("%s - %s %s %s", r.Host, r.RemoteAddr, r.Method, r.URL)
