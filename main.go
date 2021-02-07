@@ -13,10 +13,10 @@ import (
 const templ = `
 Hostname: {{ .Hostname}}
 IP: {{ .IP}}
-URI: {{ .URI}}
 {{- if .Namespace}}
 Namespace: {{ .Namespace}}
 {{- end}}
+URI: {{ .URI}}
 Method: {{ .Method}}
 RemoteAddr: {{ .RemoteAddr}}
 `
