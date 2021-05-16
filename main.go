@@ -21,23 +21,21 @@ Method: {{ .Method}}
 RemoteAddr: {{ .RemoteAddr}}
 `
 
-type PodInfo struct {
-	Hostname   string
-	IP         string
-	Namespace  string
-	URI        string
-	Method     string
-	RemoteAddr string
-	Response   string
-}
-
 func main() {
 	http.HandleFunc("/", HandleRoot)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func HandleRoot(w http.ResponseWriter, r *http.Request) {
-
+	type PodInfo struct {
+		Hostname   string
+		IP         string
+		Namespace  string
+		URI        string
+		Method     string
+		RemoteAddr string
+		Response   string
+	}
 	var info PodInfo
 	var err error
 
