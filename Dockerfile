@@ -1,12 +1,11 @@
-FROM golang:1-alpine AS builder
-
-MAINTAINER orginux
-WORKDIR $GOPATH/src/container-hostname/
-
+FROM golang:1.16.4-alpine3.13 AS builder
+LABEL maintainer="orginux"
+WORKDIR $GOPATH/src/echopod/
 COPY main.go .
-RUN CGO_ENABLED=0 GOOS=linux go build -o /go/bin/container-hostname
+RUN GO111MODULE=off CGO_ENABLED=0 GOOS=linux \
+        go build -o /go/bin/echopod
 
 FROM scratch
-COPY --from=builder /go/bin/container-hostname /go/bin/container-hostname
+COPY --from=builder /go/bin/echopod /go/bin/echopod
 EXPOSE 8080
-ENTRYPOINT ["/go/bin/container-hostname"]
+ENTRYPOINT ["/go/bin/echopod"]
