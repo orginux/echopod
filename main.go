@@ -21,16 +21,22 @@ Method: {{ .Method}}
 RemoteAddr: {{ .RemoteAddr}}
 `
 
+type PodInfo struct {
+	Hostname   string
+	IP         string
+	Namespace  string
+	URI        string
+	Method     string
+	RemoteAddr string
+	Response   string
+}
+
 func main() {
-	type PodInfo struct {
-		Hostname   string
-		IP         string
-		Namespace  string
-		URI        string
-		Method     string
-		RemoteAddr string
-		Response   string
-	}
+	http.HandleFunc("/", HandleRoot)
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func HandleRoot(w http.ResponseWriter, r *http.Request) {
 
 	var info PodInfo
 	var err error
@@ -50,17 +56,13 @@ func main() {
 		log.Fatal("Error getting Pod namespace:", err)
 	}
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		info.URI = r.RequestURI
-		info.RemoteAddr = r.RemoteAddr
-		info.Method = r.Method
-		report := template.Must(template.New("podinfo").Parse(templ))
+	info.URI = r.RequestURI
+	info.RemoteAddr = r.RemoteAddr
+	info.Method = r.Method
+	report := template.Must(template.New("podinfo").Parse(templ))
 
-		log.Printf("%s - %s %s %s", r.Host, r.RemoteAddr, r.Method, r.URL)
-		report.Execute(w, info)
-	})
-	log.Fatal(http.ListenAndServe(":8080", nil))
-
+	log.Printf("%s - %s %s %s", r.Host, r.RemoteAddr, r.Method, r.URL)
+	report.Execute(w, info)
 }
 
 func getIP() (string, error) {
