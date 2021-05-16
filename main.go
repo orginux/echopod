@@ -22,11 +22,11 @@ RemoteAddr: {{ .RemoteAddr}}
 `
 
 func main() {
-	http.HandleFunc("/", HandleRoot)
+	http.HandleFunc("/", handleRoot)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func HandleRoot(w http.ResponseWriter, r *http.Request) {
+func handleRoot(w http.ResponseWriter, r *http.Request) {
 	type PodInfo struct {
 		Hostname   string
 		IP         string
